@@ -7,32 +7,33 @@ import base64
 # --- 1. CONFIGURACIÓN DE LA PÁGINA ---
 st.set_page_config(page_title="AI Background Remover Pro", page_icon="✂️", layout="wide")
 
-# --- 2. INYECCIÓN DE CSS PERSONALIZADO (ESTRICTO 3 COLORES) ---
+# --- 2. INYECCIÓN DE CSS PERSONALIZADO (VISIBILIDAD MEJORADA) ---
 def inject_custom_css():
-    # PALETA:
-    # Color 1 (Texto/Fuerte): #5483B3
-    # Color 2 (Medio/Bordes): #7DA0C4
-    # Color 3 (Fondo/Luz):    #C1E8FF
+    # PALETA ESTRICTA:
+    # Fuerte: #5483B3
+    # Medio:  #7DA0C4
+    # Claro:  #C1E8FF
     
     st.markdown("""
         <style>
         /* --- FUENTE Y GENERAL --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
 
         html, body, [class*="css"] {
             font-family: 'Poppins', sans-serif;
-            color: #5483B3; /* Todo el texto usa el azul más fuerte */
+            color: #5483B3; /* Color base fuerte */
+            font-weight: 500; /* AUMENTADO: Texto base más grueso para mejor lectura */
         }
 
-        /* Fondo Principal: Un degradado muy sutil entre el claro y el medio */
+        /* Fondo Principal */
         .stApp {
-            background: linear-gradient(180deg, #C1E8FF 0%, #C1E8FF 80%, #7DA0C4 100%);
+            background: linear-gradient(180deg, #C1E8FF 0%, #C1E8FF 60%, #7DA0C4 100%);
         }
 
         /* --- BARRA LATERAL --- */
         [data-testid="stSidebar"] {
             background-color: #C1E8FF;
-            border-right: 2px solid #7DA0C4; /* Separación con el azul medio */
+            border-right: 3px solid #7DA0C4; /* Borde más grueso */
         }
         
         /* Elementos del Sidebar */
@@ -43,33 +44,34 @@ def inject_custom_css():
         [data-testid="stSidebar"] span,
         [data-testid="stSidebar"] p {
             color: #5483B3 !important;
-            font-weight: 600; /* Negrita para mejorar lectura sin usar negro */
+            font-weight: 700 !important; /* Negrita fuerte en sidebar */
         }
 
         /* --- TÍTULOS --- */
         h1 {
             color: #5483B3;
-            font-weight: 800;
+            font-weight: 800; /* Extra negrita */
             text-transform: uppercase;
             letter-spacing: 1px;
-            text-shadow: 2px 2px 0px #C1E8FF; /* Sombra dura clara */
+            text-shadow: 1px 1px 0px #C1E8FF; /* Sombra dura sutil para definición */
         }
         .main-subtitle {
-            color: #7DA0C4; /* Subtítulo en tono medio */
+            color: #5483B3; /* Cambiado al tono fuerte para más visibilidad */
             font-weight: 600;
             font-size: 1.2rem;
             margin-bottom: 2rem;
+            opacity: 0.9;
         }
 
-        /* --- TARJETAS (GLASSMORPHISM AZULADO) --- */
+        /* --- TARJETAS --- */
         .css-card {
-            background: rgba(125, 160, 196, 0.15); /* #7DA0C4 con mucha transparencia */
-            backdrop-filter: blur(5px);
+            background: rgba(193, 232, 255, 0.6); /* #C1E8FF más opaco */
+            backdrop-filter: blur(8px);
             border-radius: 20px;
-            border: 2px solid #7DA0C4; /* Borde sólido en tono medio */
+            border: 2px solid #5483B3; /* Borde fuerte */
             padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(84, 131, 179, 0.15); /* Sombra usando #5483B3 bajito */
+            box-shadow: 0 8px 16px rgba(84, 131, 179, 0.2);
         }
 
         /* --- SUBIDA DE ARCHIVO --- */
@@ -77,54 +79,73 @@ def inject_custom_css():
             background: #C1E8FF;
             border-radius: 15px;
             padding: 20px;
-            border: 2px dashed #5483B3; /* Borde fuerte discontinuo */
+            border: 3px dashed #5483B3; /* Borde más grueso y visible */
         }
         [data-testid="stFileUploader"] section > button {
-             background-color: #7DA0C4;
-             color: #C1E8FF; /* Texto claro sobre botón medio */
-             font-weight: bold;
+             background-color: #5483B3; /* Botón fuerte */
+             color: #C1E8FF;
+             font-weight: 800;
              border: none;
+             padding: 0.5rem 1rem;
         }
         [data-testid="stFileUploader"] div {
             color: #5483B3;
+            font-weight: 600;
         }
 
         /* --- BOTONES DE ACCIÓN --- */
         .stButton > button {
-            background-color: #5483B3; /* El color más fuerte para el botón principal */
-            color: #C1E8FF !important; /* Texto claro */
-            border: 2px solid #C1E8FF;
+            background-color: #5483B3;
+            color: #C1E8FF !important;
+            border: 3px solid #7DA0C4; /* Borde medio para contraste */
             border-radius: 30px;
-            padding: 0.6rem 1.5rem;
-            font-weight: 700;
+            padding: 0.7rem 1.5rem;
+            font-weight: 800; /* Texto muy grueso */
             transition: all 0.3s ease;
             width: 100%;
+            font-size: 1.1rem;
         }
         
         .stButton > button:hover {
             background-color: #7DA0C4;
-            color: #fff !important;
+            color: #ffffff !important; /* Blanco puro al pasar el mouse para máximo brillo */
             border-color: #5483B3;
             transform: scale(1.02);
         }
 
-        /* --- RADIO BUTTONS (SELECCIÓN) --- */
-        div[role="radiogroup"] > label > div:first-child {
-            background-color: #C1E8FF !important;
-            border-color: #5483B3 !important;
-        }
-        div[role="radiogroup"] > label[data-baseweb="radio"] {
-            background-color: transparent !important;
+        /* --- RADIO BUTTONS (BOTEONES DE SELECCIÓN) - REDISEÑADOS --- */
+        /* Hacemos que la opción seleccionada sea un bloque sólido del color fuerte */
+        label[data-baseweb="radio"][aria-checked="true"] {
+            background-color: #5483B3 !important; /* Fondo fuerte al seleccionar */
+            padding: 8px 12px !important;
+            border-radius: 8px !important;
+            margin-bottom: 4px;
+            transition: all 0.2s ease;
         }
 
-        /* --- IMÁGENES --- */
+        /* Cambiamos el color del texto y el círculo dentro de la selección a claro */
+        label[data-baseweb="radio"][aria-checked="true"] * {
+            color: #C1E8FF !important; /* Texto claro sobre fondo oscuro */
+            font-weight: 800 !important;
+        }
+        /* El círculo del radio seleccionado */
+        label[data-baseweb="radio"][aria-checked="true"] > div:first-child {
+             border-color: #C1E8FF !important;
+             background-color: #5483B3 !important;
+        }
+
+        /* Las opciones NO seleccionadas */
+        label[data-baseweb="radio"][aria-checked="false"] {
+            padding: 8px 12px !important;
+             font-weight: 600 !important;
+        }
+
+
+        /* --- IMÁGENES Y SPINNER --- */
         .stImage img {
-            border: 4px solid #C1E8FF; /* Marco tipo foto */
+            border: 4px solid #5483B3; /* Marco fuerte */
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(84, 131, 179, 0.3);
         }
-
-        /* Spinner */
         .stSpinner > div {
             border-color: #5483B3 transparent #7DA0C4 transparent !important;
         }
@@ -147,11 +168,15 @@ def main():
     # --- SIDEBAR ---
     st.sidebar.header("⚙️ Ajustes")
     
-    mode = st.sidebar.radio(
-        "Nivel de Limpieza:",
-        ["Estándar", "Detallado", "Ultra"]
-    )
+    # Usamos un contenedor para dar un poco de aire a los radios rediseñados
+    with st.sidebar.container():
+        mode = st.radio(
+            "Nivel de Limpieza:",
+            ["Estándar", "Detallado", "Ultra"]
+        )
     
+    st.sidebar.markdown("---")
+
     # --- LÓGICA ---
     rembg_kwargs = {}
     if mode == "Detallado":
@@ -176,10 +201,11 @@ def main():
             st.image(image, use_column_width=True)
         
         with col2:
-            st.subheader(f"Resultado")
+            # Usamos un f-string para que el título cambie dinámicamente
+            st.subheader(f"Resultado: {mode.upper()}") 
             placeholder = st.empty()
             with placeholder.container():
-                 with st.spinner("Trabajando..."):
+                 with st.spinner("Procesando con IA..."):
                     try:
                         output = remove(image, session=session, **rembg_kwargs)
                         placeholder.empty()
@@ -191,7 +217,7 @@ def main():
                         
                         st.markdown("<br>", unsafe_allow_html=True)
                         st.download_button(
-                            label="⬇️ GUARDAR PNG",
+                            label="⬇️ DESCARGAR PNG",
                             data=byte_im,
                             file_name=f"clean_{mode}.png",
                             mime="image/png",
@@ -205,4 +231,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
