@@ -9,8 +9,7 @@ st.set_page_config(page_title="AI Background Remover Pro", page_icon="✂️", l
 
 # --- 2. INYECCIÓN DE CSS PERSONALIZADO (ESTÉTICA) ---
 def inject_custom_css():
-    # Paleta de colores de la imagen proporcionada
-    # C1E8FF (Lightest), 7DA0C4, 5483B3, 052659, 021024 (Darkest)
+    # Paleta: #C1E8FF (Claro), #7DA0C4, #5483B3, #052659, #021024 (Oscuro)
     
     st.markdown("""
         <style>
@@ -19,85 +18,95 @@ def inject_custom_css():
 
         html, body, [class*="css"] {
             font-family: 'Poppins', sans-serif;
+            color: #021024; /* Texto general oscuro por defecto */
         }
 
-        /* Fondo principal con un degradado suave y luminoso */
+        /* Fondo principal */
         .stApp {
             background: linear-gradient(135deg, #C1E8FF 0%, #7DA0C4 100%);
         }
 
-        /* --- BARRA LATERAL (SIDEBAR) --- */
+        /* --- BARRA LATERAL (SIDEBAR) - AHORA CLARA --- */
         [data-testid="stSidebar"] {
-            background: linear-gradient(to bottom, #052659, #021024);
-            border-right: 1px solid #5483B3;
+            background-color: #C1E8FF; /* Color base claro */
+            background-image: linear-gradient(180deg, #C1E8FF 0%, #bfdff5 100%);
+            border-right: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 2px 0 10px rgba(5, 38, 89, 0.05); /* Sombra muy sutil a la derecha */
         }
         
-        /* Textos en la barra lateral para que sean legibles (blanco/claro) */
+        /* Textos en la barra lateral (Ahora OSCUROS para leerse sobre fondo claro) */
         [data-testid="stSidebar"] h1, 
         [data-testid="stSidebar"] h2, 
         [data-testid="stSidebar"] h3, 
         [data-testid="stSidebar"] label, 
+        [data-testid="stSidebar"] span,
         [data-testid="stSidebar"] .stRadio div[role='radiogroup'] > label {
-            color: #C1E8FF !important;
+            color: #052659 !important;
+            font-weight: 500;
         }
 
         /* --- TÍTULOS PRINCIPALES --- */
         h1 {
-            color: #021024;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            color: #052659;
+            font-weight: 700;
+            letter-spacing: -1px;
         }
         .main-subtitle {
-            color: #052659;
-            font-weight: 400;
+            color: #5483B3;
+            font-weight: 500;
             margin-bottom: 2rem;
         }
 
         /* --- CONTENEDORES TIPO "TARJETA" (GLASSMORPHISM) --- */
-        /* Esto es clave para quitar el aspecto plano. Crea cajas semitransparentes. */
         .css-card {
-            background: rgba(255, 255, 255, 0.25); /* Blanco semitransparente */
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); /* Sombra azulada suave */
-            backdrop-filter: blur(8px); /* Efecto de desenfoque de fondo */
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 20px; /* Bordes muy redondeados */
-            border: 1px solid rgba(255, 255, 255, 0.18); /* Borde sutil brillante */
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.4); /* Más transparente y luminoso */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 30px;
             margin-bottom: 20px;
         }
 
         /* --- WIDGET DE SUBIDA DE ARCHIVOS --- */
         [data-testid="stFileUploader"] {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 15px;
-            padding: 15px;
-            border: 2px dashed #5483B3; /* Borde discontinuo azul medio */
+            padding: 20px;
+            border: 2px dashed #7DA0C4; 
+            transition: border-color 0.3s;
+        }
+        [data-testid="stFileUploader"]:hover {
+            border-color: #052659;
         }
         [data-testid="stFileUploader"] section > button {
-             background-color: #5483B3; /* Color del botón de 'Browse files' */
+             background-color: #5483B3;
+             color: white;
         }
 
         /* --- BOTONES (Descarga) --- */
         .stButton > button {
-            background: linear-gradient(to right, #5483B3, #052659);
+            background: linear-gradient(to right, #052659, #5483B3); /* Degradado oscuro para resaltar */
             color: white !important;
             border: none;
-            border-radius: 30px; /* Forma de píldora */
+            border-radius: 30px;
             padding: 0.6rem 1.2rem;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(84, 131, 179, 0.4); /* Sombra azul brillante */
+            box-shadow: 0 4px 15px rgba(5, 38, 89, 0.3);
             transition: all 0.3s ease;
         }
         
         .stButton > button:hover {
-            transform: translateY(-3px); /* Efecto de elevación al pasar el mouse */
-            box-shadow: 0 8px 25px rgba(84, 131, 179, 0.6);
-            background: linear-gradient(to right, #7DA0C4, #5483B3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 38, 89, 0.4);
+            background: linear-gradient(to right, #021024, #052659);
         }
-        
-        /* Ajuste de las imágenes dentro de las columnas para que no toquen los bordes de la tarjeta */
+
+        /* Ajuste imágenes */
         .stImage img {
             border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         </style>
@@ -110,22 +119,33 @@ def get_model(model_name):
 
 # --- 4. INTERFAZ PRINCIPAL ---
 def main():
-    # Inyectar los estilos primero
+    # Inyectar estilos
     inject_custom_css()
 
     st.title("✂️ AI Background Remover Pro")
-    st.markdown('<p class="main-subtitle">Elimina fondos con precisión profesional y una estética moderna.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="main-subtitle">Herramienta de precisión con estética minimalista.</p>', unsafe_allow_html=True)
 
-    # --- BARRA LATERAL (Configuración) ---
-    st.sidebar.header("⚙️ Configuración")
+    # --- BARRA LATERAL (Ahora clara) ---
+    st.sidebar.header("⚙️ Panel de Control")
     
     mode = st.sidebar.radio(
         "Nivel de Limpieza:",
         ["Estándar", "Detallado", "Ultra"],
         help="Estándar: Rápido. Ultra: Mejor para cabello y bordes finos."
     )
+    
+    # Nota informativa en el sidebar para llenar espacio visualmente
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(
+        """
+        <div style='background-color: rgba(255,255,255,0.4); padding: 10px; border-radius: 10px; border: 1px solid #7DA0C4; font-size: 0.85rem; color: #052659;'>
+        ℹ️ <b>Tip:</b> Usa el modo <i>Ultra</i> si tu imagen tiene cabello suelto o detalles complejos.
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
 
-    # --- LÓGICA DE LOS MODOS ---
+    # --- LÓGICA ---
     rembg_kwargs = {}
     if mode == "Detallado":
         rembg_kwargs = {"alpha_matting": True, "alpha_matting_foreground_threshold": 240,"alpha_matting_background_threshold": 10, "alpha_matting_erode_size": 10}
@@ -134,55 +154,47 @@ def main():
 
     session = get_model("isnet-general-use")
 
-    # --- ZONA DE SUBIDA (Envuesta en una "tarjeta" visual) ---
-    st.markdown('<div class="css-card">', unsafe_allow_html=True) # Inicio Tarjeta Superior
+    # --- ÁREA PRINCIPAL ---
+    st.markdown('<div class="css-card">', unsafe_allow_html=True)
     uploaded_file = st.file_uploader("Sube tu imagen (PNG, JPG, WEBP)", type=["png", "jpg", "jpeg", "webp"])
-    st.markdown('</div>', unsafe_allow_html=True) # Fin Tarjeta Superior
-
+    st.markdown('</div>', unsafe_allow_html=True)
 
     if uploaded_file:
-        # Usamos un contenedor principal para los resultados
-        st.markdown('<div class="css-card">', unsafe_allow_html=True) # Inicio Tarjeta Resultados
-        
+        st.markdown('<div class="css-card">', unsafe_allow_html=True)
         col1, col2 = st.columns(2, gap="large")
         
-        # Imagen Original
         image = Image.open(uploaded_file)
         with col1:
             st.subheader("Original")
             st.image(image, use_column_width=True)
         
-        # Botón de Procesar y Resultado
         with col2:
             st.subheader(f"Resultado ({mode})")
-            # Usamos un placeholder para que el spinner esté centrado y bonito
             placeholder = st.empty()
             with placeholder.container():
-                 with st.spinner(f"Procesando con inteligencia artificial..."):
+                 with st.spinner(f"Procesando..."):
                     try:
                         output = remove(image, session=session, **rembg_kwargs)
-                        # Limpiamos el spinner y mostramos la imagen
                         placeholder.empty()
                         st.image(output, use_column_width=True)
                         
-                        # Preparar descarga
                         buf = BytesIO()
                         output.save(buf, format="PNG")
                         byte_im = buf.getvalue()
                         
-                        st.markdown("<br>", unsafe_allow_html=True) # Espacio
+                        st.markdown("<br>", unsafe_allow_html=True)
                         st.download_button(
-                            label="⬇️ Descargar PNG sin fondo",
+                            label="⬇️ Descargar PNG",
                             data=byte_im,
                             file_name=f"sin_fondo_{mode}.png",
                             mime="image/png",
-                            use_container_width=True # Botón ancho completo en su columna
+                            use_container_width=True
                         )
                     except Exception as e:
                         placeholder.empty()
-                        st.error(f"Error procesando imagen: {e}")
+                        st.error(f"Error: {e}")
         
-        st.markdown('</div>', unsafe_allow_html=True) # Fin Tarjeta Resultados
+        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
