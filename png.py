@@ -152,18 +152,6 @@ def main():
         ["Estándar", "Detallado", "Ultra"]
     )
     
-    # Caja de info con los colores permitidos
-    st.sidebar.markdown("---")
-    st.sidebar.markdown(
-        """
-        <div style='background-color: #C1E8FF; padding: 15px; border-radius: 10px; border: 2px solid #5483B3; color: #5483B3;'>
-        <b>💡 Nota:</b><br>
-        Para cabellos o pelaje, selecciona el modo <b>Ultra</b>.
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
-
     # --- LÓGICA ---
     rembg_kwargs = {}
     if mode == "Detallado":
@@ -217,3 +205,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
