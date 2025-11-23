@@ -120,13 +120,9 @@ def main():
     inject_custom_css() # Aplicar diseño
 
     st.title("✂️ AI Background Remover")
-    st.markdown("### Diseño Puro & Eliminación Precisa")
 
     # --- BARRA LATERAL ---
     st.sidebar.header("⚙️ Configuración")
-    
-    # Nota visual
-    st.sidebar.info("Selecciona el modo según el detalle de tu imagen.")
 
     # Selector de modo (Uso estándar para evitar errores)
     mode = st.sidebar.radio(
@@ -212,3 +208,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
