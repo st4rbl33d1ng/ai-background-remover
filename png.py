@@ -146,12 +146,8 @@ def main():
         </a>
     """, unsafe_allow_html=True)
 
-    st.markdown('<p style="margin-bottom: 30px;">Diseño Puro & Eliminación Precisa</p>', unsafe_allow_html=True)
-
     # --- BARRA LATERAL ---
     st.sidebar.header("⚙️ Configuración")
-    st.sidebar.info("Selecciona el nivel de detalle.")
-    
     mode = st.sidebar.radio(
         "Nivel de Limpieza:",
         ["Estándar", "Detallado", "Ultra"]
@@ -211,3 +207,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
