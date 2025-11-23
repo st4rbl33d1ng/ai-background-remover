@@ -1,4 +1,5 @@
 streamlit
-rembg
+rembg[gpu,cli]==2.0.50
 pillow
 numpy
+onnxruntime
