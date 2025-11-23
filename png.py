@@ -7,139 +7,158 @@ import base64
 # --- 1. CONFIGURACIÓN DE LA PÁGINA ---
 st.set_page_config(page_title="AI Background Remover Pro", page_icon="✂️", layout="wide")
 
-# --- 2. INYECCIÓN DE CSS PERSONALIZADO (ESTÉTICA) ---
+# --- 2. INYECCIÓN DE CSS PERSONALIZADO (ESTRICTO 3 COLORES) ---
 def inject_custom_css():
-    # Paleta: #C1E8FF (Claro), #7DA0C4, #5483B3, #052659, #021024 (Oscuro)
+    # PALETA:
+    # Color 1 (Texto/Fuerte): #5483B3
+    # Color 2 (Medio/Bordes): #7DA0C4
+    # Color 3 (Fondo/Luz):    #C1E8FF
     
     st.markdown("""
         <style>
-        /* --- FUENTE Y FONDO GLOBAL --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        /* --- FUENTE Y GENERAL --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
         html, body, [class*="css"] {
             font-family: 'Poppins', sans-serif;
-            color: #021024; /* Texto general oscuro por defecto */
+            color: #5483B3; /* Todo el texto usa el azul más fuerte */
         }
 
-        /* Fondo principal */
+        /* Fondo Principal: Un degradado muy sutil entre el claro y el medio */
         .stApp {
-            background: linear-gradient(135deg, #C1E8FF 0%, #7DA0C4 100%);
+            background: linear-gradient(180deg, #C1E8FF 0%, #C1E8FF 80%, #7DA0C4 100%);
         }
 
-        /* --- BARRA LATERAL (SIDEBAR) - AHORA CLARA --- */
+        /* --- BARRA LATERAL --- */
         [data-testid="stSidebar"] {
-            background-color: #C1E8FF; /* Color base claro */
-            background-image: linear-gradient(180deg, #C1E8FF 0%, #bfdff5 100%);
-            border-right: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 2px 0 10px rgba(5, 38, 89, 0.05); /* Sombra muy sutil a la derecha */
+            background-color: #C1E8FF;
+            border-right: 2px solid #7DA0C4; /* Separación con el azul medio */
         }
         
-        /* Textos en la barra lateral (Ahora OSCUROS para leerse sobre fondo claro) */
+        /* Elementos del Sidebar */
         [data-testid="stSidebar"] h1, 
         [data-testid="stSidebar"] h2, 
         [data-testid="stSidebar"] h3, 
         [data-testid="stSidebar"] label, 
         [data-testid="stSidebar"] span,
-        [data-testid="stSidebar"] .stRadio div[role='radiogroup'] > label {
-            color: #052659 !important;
-            font-weight: 500;
+        [data-testid="stSidebar"] p {
+            color: #5483B3 !important;
+            font-weight: 600; /* Negrita para mejorar lectura sin usar negro */
         }
 
-        /* --- TÍTULOS PRINCIPALES --- */
+        /* --- TÍTULOS --- */
         h1 {
-            color: #052659;
-            font-weight: 700;
-            letter-spacing: -1px;
+            color: #5483B3;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px #C1E8FF; /* Sombra dura clara */
         }
         .main-subtitle {
-            color: #5483B3;
-            font-weight: 500;
+            color: #7DA0C4; /* Subtítulo en tono medio */
+            font-weight: 600;
+            font-size: 1.2rem;
             margin-bottom: 2rem;
         }
 
-        /* --- CONTENEDORES TIPO "TARJETA" (GLASSMORPHISM) --- */
+        /* --- TARJETAS (GLASSMORPHISM AZULADO) --- */
         .css-card {
-            background: rgba(255, 255, 255, 0.4); /* Más transparente y luminoso */
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(125, 160, 196, 0.15); /* #7DA0C4 con mucha transparencia */
+            backdrop-filter: blur(5px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 2px solid #7DA0C4; /* Borde sólido en tono medio */
             padding: 30px;
             margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(84, 131, 179, 0.15); /* Sombra usando #5483B3 bajito */
         }
 
-        /* --- WIDGET DE SUBIDA DE ARCHIVOS --- */
+        /* --- SUBIDA DE ARCHIVO --- */
         [data-testid="stFileUploader"] {
-            background: rgba(255, 255, 255, 0.5);
+            background: #C1E8FF;
             border-radius: 15px;
             padding: 20px;
-            border: 2px dashed #7DA0C4; 
-            transition: border-color 0.3s;
-        }
-        [data-testid="stFileUploader"]:hover {
-            border-color: #052659;
+            border: 2px dashed #5483B3; /* Borde fuerte discontinuo */
         }
         [data-testid="stFileUploader"] section > button {
-             background-color: #5483B3;
-             color: white;
+             background-color: #7DA0C4;
+             color: #C1E8FF; /* Texto claro sobre botón medio */
+             font-weight: bold;
+             border: none;
+        }
+        [data-testid="stFileUploader"] div {
+            color: #5483B3;
         }
 
-        /* --- BOTONES (Descarga) --- */
+        /* --- BOTONES DE ACCIÓN --- */
         .stButton > button {
-            background: linear-gradient(to right, #052659, #5483B3); /* Degradado oscuro para resaltar */
-            color: white !important;
-            border: none;
+            background-color: #5483B3; /* El color más fuerte para el botón principal */
+            color: #C1E8FF !important; /* Texto claro */
+            border: 2px solid #C1E8FF;
             border-radius: 30px;
-            padding: 0.6rem 1.2rem;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(5, 38, 89, 0.3);
+            padding: 0.6rem 1.5rem;
+            font-weight: 700;
             transition: all 0.3s ease;
+            width: 100%;
         }
         
         .stButton > button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(5, 38, 89, 0.4);
-            background: linear-gradient(to right, #021024, #052659);
+            background-color: #7DA0C4;
+            color: #fff !important;
+            border-color: #5483B3;
+            transform: scale(1.02);
         }
 
-        /* Ajuste imágenes */
+        /* --- RADIO BUTTONS (SELECCIÓN) --- */
+        div[role="radiogroup"] > label > div:first-child {
+            background-color: #C1E8FF !important;
+            border-color: #5483B3 !important;
+        }
+        div[role="radiogroup"] > label[data-baseweb="radio"] {
+            background-color: transparent !important;
+        }
+
+        /* --- IMÁGENES --- */
         .stImage img {
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 4px solid #C1E8FF; /* Marco tipo foto */
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(84, 131, 179, 0.3);
+        }
+
+        /* Spinner */
+        .stSpinner > div {
+            border-color: #5483B3 transparent #7DA0C4 transparent !important;
         }
 
         </style>
     """, unsafe_allow_html=True)
 
-# --- 3. CARGA DEL MODELO (Con Caché) ---
+# --- 3. MODELO ---
 @st.cache_resource
 def get_model(model_name):
     return new_session(model_name)
 
-# --- 4. INTERFAZ PRINCIPAL ---
+# --- 4. MAIN ---
 def main():
-    # Inyectar estilos
     inject_custom_css()
 
-    st.title("✂️ AI Background Remover Pro")
-    st.markdown('<p class="main-subtitle">Herramienta de precisión con estética minimalista.</p>', unsafe_allow_html=True)
+    st.title("✂️ AI Background Remover")
+    st.markdown('<p class="main-subtitle">Diseño Puro & Eliminación Precisa</p>', unsafe_allow_html=True)
 
-    # --- BARRA LATERAL (Ahora clara) ---
-    st.sidebar.header("⚙️ Panel de Control")
+    # --- SIDEBAR ---
+    st.sidebar.header("⚙️ Ajustes")
     
     mode = st.sidebar.radio(
         "Nivel de Limpieza:",
-        ["Estándar", "Detallado", "Ultra"],
-        help="Estándar: Rápido. Ultra: Mejor para cabello y bordes finos."
+        ["Estándar", "Detallado", "Ultra"]
     )
     
-    # Nota informativa en el sidebar para llenar espacio visualmente
+    # Caja de info con los colores permitidos
     st.sidebar.markdown("---")
     st.sidebar.markdown(
         """
-        <div style='background-color: rgba(255,255,255,0.4); padding: 10px; border-radius: 10px; border: 1px solid #7DA0C4; font-size: 0.85rem; color: #052659;'>
-        ℹ️ <b>Tip:</b> Usa el modo <i>Ultra</i> si tu imagen tiene cabello suelto o detalles complejos.
+        <div style='background-color: #C1E8FF; padding: 15px; border-radius: 10px; border: 2px solid #5483B3; color: #5483B3;'>
+        <b>💡 Nota:</b><br>
+        Para cabellos o pelaje, selecciona el modo <b>Ultra</b>.
         </div>
         """, 
         unsafe_allow_html=True
@@ -154,9 +173,9 @@ def main():
 
     session = get_model("isnet-general-use")
 
-    # --- ÁREA PRINCIPAL ---
+    # --- UI PRINCIPAL ---
     st.markdown('<div class="css-card">', unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("Sube tu imagen (PNG, JPG, WEBP)", type=["png", "jpg", "jpeg", "webp"])
+    uploaded_file = st.file_uploader("Sube imagen aquí", type=["png", "jpg", "jpeg", "webp"])
     st.markdown('</div>', unsafe_allow_html=True)
 
     if uploaded_file:
@@ -169,10 +188,10 @@ def main():
             st.image(image, use_column_width=True)
         
         with col2:
-            st.subheader(f"Resultado ({mode})")
+            st.subheader(f"Resultado")
             placeholder = st.empty()
             with placeholder.container():
-                 with st.spinner(f"Procesando..."):
+                 with st.spinner("Trabajando..."):
                     try:
                         output = remove(image, session=session, **rembg_kwargs)
                         placeholder.empty()
@@ -184,9 +203,9 @@ def main():
                         
                         st.markdown("<br>", unsafe_allow_html=True)
                         st.download_button(
-                            label="⬇️ Descargar PNG",
+                            label="⬇️ GUARDAR PNG",
                             data=byte_im,
-                            file_name=f"sin_fondo_{mode}.png",
+                            file_name=f"clean_{mode}.png",
                             mime="image/png",
                             use_container_width=True
                         )
