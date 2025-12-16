@@ -130,21 +130,6 @@ def main():
 
     # 1. TÍTULO
     st.title("✂️ AI Background Remover")
-    
-    # 2. BOTÓN DE INSTAGRAM (Aquí es donde lo insertamos bajo el título)
-    # CAMBIA EL LINK POR EL TUYO
-    instagram_link = "https://www.instagram.com/st4rbl33d1ng"
-    
-    st.markdown(f"""
-        <a href="{instagram_link}" target="_blank" class="insta-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-            Sígueme en Instagram
-        </a>
-    """, unsafe_allow_html=True)
 
     # --- BARRA LATERAL ---
     st.sidebar.header("⚙️ Configuración")
@@ -207,4 +192,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
